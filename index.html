@@ -10,74 +10,89 @@
 </head>
 <body class="bg-gray-100 font-sans">
   
-  <!-- Header -->
+    <!-- Header -->
   <header class="flex justify-between items-center p-6 bg-white shadow-md relative">
-    <h1 class="text-xl font-bold text-red-500">windbnb</h1>
-    <div class="flex items-center border rounded-full overflow-hidden shadow-sm">
-      <button id="open-location-modal" class="px-4 py-2 border-r focus:outline-none" aria-label="Select location">Add location</button>
-      <button id="open-guests-modal" class="px-4 py-2 border-r focus:outline-none" aria-label="Select guests">
-        <span id="guest-info">Add guests</span>
+    <img src="./src/images/icons/logo-f7862584.svg" alt="Windbnb Logo" class="w-auto max-w-[150px] h-auto">
+    <div class="flex items-center rounded-full overflow-hidden shadow-sm bg-white px-4 py-2 space-x-4">
+      <button id="open-location-modal" class="text-gray-500 focus:outline-none">Add Location</button>
+      <span class=" border-gray-300 h-6"></span>
+      <button id="open-guests-modal" class="text-gray-500 focus:outline-none">
+        <span id="guest-info">Add Guests</span>
       </button>
-      <button id="filter-button" class="px-4 py-2 text-red-500 focus:outline-none" aria-label="Open filters">🔍</button>
+      <span class=" border-gray-300 h-6"></span>
+      <button id="filter-button" class="flex items-center bg-red-500 text-white px-4 py-2 rounded-full focus:outline-none">
+        <span class="material-icons mr-2">search</span>
+        Buscar
+      </button>
     </div>
   </header>
-
-  <!-- Modal de Filtros -->
-  <div id="filter-modal" class="fixed inset-0 bg-white shadow-md transform -translate-y-full transition-transform duration-300 z-50 p-6">
-    <div class="max-w-4xl mx-auto">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-semibold">Filter Stays</h3>
-        <button id="close-filter-modal" class="text-gray-600 text-lg">×</button>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Ubicación -->
-        <div class="relative">
-          <label for="location-input" class="block text-gray-700">Location</label>
-          <div class="flex items-center border p-2 rounded-lg shadow-sm bg-white">
-            <span class="material-icons text-gray-600">location_on</span>
-            <input id="location-input" type="text" class="w-full pl-2 border-none focus:outline-none" placeholder="Enter city, country" autocomplete="off" list="location-options" />
-          </div>
-          <datalist id="location-options"></datalist>
-        </div>
-        <!-- Selección de huéspedes -->
-        <div class="relative">
-          <label class="block text-gray-700">Guests</label>
-          <div id="guests-toggle" class="flex items-center border p-2 rounded-lg shadow-sm bg-white cursor-pointer">
-            <span class="material-icons text-gray-600">people</span>
-            <span id="guest-info" class="ml-2">Add guests</span>
-          </div>
-          <div id="guests-options" class="absolute w-full mt-2 border bg-white shadow-lg hidden p-4 rounded-lg">
-            <div class="flex justify-between px-4 py-2">
-              <span class="text-sm text-gray-600">Adults</span>
-              <div class="flex items-center">
-                <button id="decrease-adults" class="px-2 py-1 text-sm">-</button>
-                <span id="adults-count" class="px-4 py-1">0</span>
-                <button id="increase-adults" class="px-2 py-1 text-sm">+</button>
-              </div>
-            </div>
-            <div class="flex justify-between px-4 py-2">
-              <span class="text-sm text-gray-600">Children</span>
-              <div class="flex items-center">
-                <button id="decrease-children" class="px-2 py-1 text-sm">-</button>
-                <span id="children-count" class="px-4 py-1">0</span>
-                <button id="increase-children" class="px-2 py-1 text-sm">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button id="apply-filters" class="mt-4 w-full bg-red-500 text-white py-2 rounded-lg">Apply Filters</button>
+  
+ <!-- Modal de Filtros -->
+ <div id="filter-modal" class="fixed inset-0 bg-white shadow-md transform -translate-y-full transition-transform duration-300 z-50 p-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-semibold">Filter Stays</h3>
+      <button id="close-filter-modal" class="text-gray-600 text-lg">×</button>
     </div>
-  </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Ubicación -->
+      <div class="relative">
+        <label for="location-input" class="block text-gray-700 font-semibold">Location</label>
+        <div class="flex items-center border p-2 rounded-lg shadow-sm bg-white">
+          <span class="material-icons text-gray-600">location_on</span>
+          <input id="location-input" type="text" class="w-full pl-2 border-none focus:outline-none" placeholder="Enter city, country" autocomplete="off" />
+        </div>
+        <ul id="custom-datalist" class="absolute w-full bg-white border shadow-lg hidden mt-1 rounded-lg max-h-48 overflow-auto z-50"></ul>
+      </div>
+      
+      <!-- Selección de huéspedes -->
+      <div class="relative">
+        <label class="block text-gray-700 font-semibold">Guests</label>
+        <div id="guests-toggle" class="flex items-center border p-2 rounded-lg shadow-sm bg-white cursor-pointer">
+          <span class="material-icons text-gray-600">people</span>
+          <span id="guest-info" class="ml-2">Add guests</span>
+        </div>
+        <div id="guests-options" class="absolute w-full mt-2 border bg-white shadow-lg hidden p-4 rounded-lg">
+          <!-- Adults -->
+          <div class="mb-4">
+            <p class="text-md font-bold">Adults</p>
+            <p class="text-sm text-gray-500">Ages 13 or above</p>
+            <div class="flex items-center mt-1">
+              <button id="decrease-adults" class="px-3 py-1 border rounded-md text-lg">-</button>
+              <span id="adults-count" class="px-4 text-lg">0</span>
+              <button id="increase-adults" class="px-3 py-1 border rounded-md text-lg">+</button>
+            </div>
+          </div>
+          <!-- Children -->
+          <div>
+            <p class="text-md font-bold">Children</p>
+            <p class="text-sm text-gray-500">Ages 13 or above</p>
+            <div class="flex items-center mt-1">
+              <button id="decrease-children" class="px-3 py-1 border rounded-md text-lg">-</button>
+              <span id="children-count" class="px-4 text-lg">0</span>
+              <button id="increase-children" class="px-3 py-1 border rounded-md text-lg">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button id="apply-filters"
+        class="flex items-center justify-center h-full min-w-[80px] bg-red-500 text-white px-4 py-3 rounded-lg focus:outline-none hover:bg-red-600 shadow-md transition-colors duration-300">
+        <span class="material-icons mr-2">search</span>
+        Buscar
+      </button>
+       </div>
+    </div>
+ </div>
+</div>
 
-  <!-- Main Content -->
-  <main class="max-w-6xl mx-auto p-6">
+
+
+   <!-- Main Content -->
+   <main class="max-w-6xl mx-auto p-6">
     <h2 class="text-2xl font-semibold">Stays in Finland</h2>
     <p id="stays-count" class="text-gray-500 mb-6">12+ stays</p>
-    <div id="stays-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div id="stays-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Aquí se cargarán las estancias dinámicamente -->
+    </div>
   </main>
-
-</body>
-</html>
-
-

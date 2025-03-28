@@ -2,8 +2,7 @@
  * Aquí estará la lógica principal de la aplicación.
  * Este bloque de código contiene la funcionalidad principal
  * que define el comportamiento del programa.
- */
-import { stays } from "./stays.js";
+ */import { stays } from "./stays.js";
 
 // Selección de elementos del DOM
 const staysContainer = document.getElementById("stays-container");
@@ -22,16 +21,12 @@ const increaseAdults = document.getElementById("increase-adults");
 const decreaseAdults = document.getElementById("decrease-adults");
 const increaseChildren = document.getElementById("increase-children");
 const decreaseChildren = document.getElementById("decrease-children");
+const dataList = document.getElementById("custom-datalist");
 
 let selectedLocation = "";
 let selectedAdults = 0;
 let selectedChildren = 0;
 let debounceTimeout;
-
-// Crear y asignar datalist para ubicación
-document.body.insertAdjacentHTML('beforeend', '<datalist id="location-options"></datalist>');
-locationInput.setAttribute("list", "location-options");
-const locationDatalist = document.getElementById("location-options");
 
 // Función para renderizar las estancias con animación
 function renderStays(staysList) {
@@ -80,34 +75,33 @@ closeFilterModal.addEventListener("click", () => filterModal.classList.add("-tra
 applyFilters.addEventListener("click", applyFilter);
 
 // Evento para manejar la selección de ubicación con sugerencias dinámicas
-locationInput.addEventListener("input", (e) => {
-  clearTimeout(debounceTimeout);
-  debounceTimeout = setTimeout(() => {
-    const inputValue = e.target.value.toLowerCase();
-    
-    const uniqueLocations = ["All", ...new Set(stays.map(stay => `${stay.city}, ${stay.country}`))];
-    
-    const filteredLocations = uniqueLocations.filter(location => 
-      location.toLowerCase().includes(inputValue)
-    );
-    
-    locationDatalist.innerHTML = filteredLocations
-      .map(location => `<option value="${location}"></option>`)
-      .join("");
-  }, 300);
-});
+locationInput.addEventListener("input", () => {
+  const query = locationInput.value.toLowerCase();
+  dataList.innerHTML = "";
 
-// Evento para detectar selección desde el datalist y mantenerla fija
-locationInput.addEventListener("change", (e) => {
-  const selectedValue = e.target.value;
-  const isValidLocation = selectedValue === "All" || stays.some(stay => `${stay.city}, ${stay.country}` === selectedValue);
-  
-  if (isValidLocation) {
-    selectedLocation = selectedValue;
-    locationInput.value = selectedLocation; // Asegura que el valor seleccionado se mantenga
-    applyFilter();
+  if (query) {
+    const uniqueLocations = ["All", ...new Set(stays.map(stay => `${stay.city}, ${stay.country}`))];
+    const filteredLocations = uniqueLocations.filter(location => location.toLowerCase().includes(query));
+
+    if (filteredLocations.length > 0) {
+      dataList.classList.remove("hidden");
+      filteredLocations.forEach(location => {
+        const item = document.createElement("li");
+        item.textContent = location;
+        item.classList.add("p-2", "hover:bg-gray-200", "cursor-pointer");
+        item.addEventListener("click", () => {
+          locationInput.value = location;
+          selectedLocation = location;
+          dataList.classList.add("hidden");
+          applyFilter();
+        });
+        dataList.appendChild(item);
+      });
+    } else {
+      dataList.classList.add("hidden");
+    }
   } else {
-    locationInput.value = selectedLocation; // Evita que se borre si el valor no es válido
+    dataList.classList.add("hidden");
   }
 });
 
