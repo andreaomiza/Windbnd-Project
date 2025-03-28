@@ -1,0 +1,51 @@
+@media (max-width: 640px) { /* Aplica en pantallas menores a 640px */
+    header {
+      flex-direction: column; /* Apila elementos */
+      align-items: center; /* Centra elementos */
+      gap: 1rem; /* Espaciado */
+    }
+  
+    header img {
+      max-width: 120px; /* Tamaño del logo en mobile */
+    }
+  
+    .button-container {
+      display: flex;
+      flex-direction: column; /* Apila botones */
+      width: 100%;
+      gap: 0.5rem; 
+    }
+  
+    .button-container button {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .button-container .separator {
+      display: none; /* Oculta separadores */
+    }
+
+    /* Ajustar botón de búsqueda */
+    #filter-button {
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+    }
+}
+
+@media (min-width: 641px) { /* En pantallas grandes, mostrar todo */
+    #filter-button span:not(.material-icons) {
+      display: inline !important;
+      visibility: visible !important;
+      width: auto !important;
+      height: auto !important;
+    }
+}
+
+
+
+
+
+
+  

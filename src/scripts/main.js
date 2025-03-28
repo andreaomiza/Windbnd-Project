@@ -140,19 +140,8 @@ decreaseChildren.addEventListener("click", () => {
     }
 });
 
-// Seleccionamos los inputs
-const inputs = [document.getElementById("location-input"), document.getElementById("guest-info")];
 
-// Agregamos eventos a cada input
-inputs.forEach((input) => {
-    input.addEventListener("focus", () => {
-        input.classList.add("border-2", "border-red-500");
-    });
 
-    input.addEventListener("blur", () => {
-        input.classList.remove("border-2", "border-red-500");
-    });
-});
 
 // Renderizar todas las estancias al cargar la página
 renderStays(stays);
